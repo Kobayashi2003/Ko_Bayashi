@@ -7,3 +7,6 @@
 7. [C语言技术网](http://www.freecplus.net/)
 8. [minGV下载链接](https://sourceforge.net/projects/mingw-w64/files/)
 9. [开源协议](https://zhuanlan.zhihu.com/p/350966700?utm_id=0)
+10. [Caddy官网](https://caddyserver.com/)
+11. [ArchLinux官网](https://archlinux.org/)
+12. [Keras中文文档](https://keras.io/zh/)
