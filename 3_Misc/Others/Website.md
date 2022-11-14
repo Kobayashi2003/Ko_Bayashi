@@ -10,3 +10,6 @@
 10. [Caddy官网](https://caddyserver.com/)
 11. [ArchLinux官网](https://archlinux.org/)
 12. [Keras中文文档](https://keras.io/zh/)
+13. [Stack Overflow](https://stackoverflow.org.cn/)
+14. [C/C++转汇编](https://godbolt.org/)
+15. [cs61a](https://cs61a.org/)
