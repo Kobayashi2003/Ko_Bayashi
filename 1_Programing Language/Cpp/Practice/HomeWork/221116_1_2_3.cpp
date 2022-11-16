@@ -134,7 +134,6 @@ int main() {
     // cin >> x1 >> y1 >> x2 >> y2;
     // Rational r1(x1, y1), r2(x2, y2);
 
-
     int x1, y1, x2;
     double d;
     cin >> x1 >> y1 >> x2 >> d;

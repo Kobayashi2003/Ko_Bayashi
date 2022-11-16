@@ -14,6 +14,7 @@ int main() {
 
     Student stud(101, 78.5);
     Student * const p = &stud;
+    // const Student * p = &stud; 
     p->display();
     p->change(101, 80.5);
     p->display();
