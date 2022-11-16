@@ -29,3 +29,21 @@ https://blog.csdn.net/weixin_51178129/article/details/126037386?spm=1001.2101.30
 然后更新源
 > sudo apt-get update
 
+
+# 将 wsl2 中的端口映射到 windows 中
+
+[参考](https://blog.csdn.net/keyiis_sh/article/details/113819244)
+
+查看 wsl 的版本
+> wsl -l -v
+
+查看 wsl2 的 ip 地址
+> wsl -- ifconfig eth0
+
+linux 中查看端口占用
+> lsof -i:8080
+
+Windows 中查看端口占用
+> netstat -ano | findstr 8080
+
+> netsh interface portproxy add v4tov4 listenport=8080 listenaddress=0.0.0.0 connectport=8080 connectaddress=172.27.3.243
