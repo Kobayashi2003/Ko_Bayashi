@@ -30,6 +30,11 @@ https://blog.csdn.net/weixin_51178129/article/details/126037386?spm=1001.2101.30
 > sudo apt-get update
 
 
+# 将wsl1发配升级到wsl2
+
+> wsl --set-version kali-linux 2
+
+
 # 将 wsl2 中的端口映射到 windows 中
 
 [参考](https://blog.csdn.net/keyiis_sh/article/details/113819244)
