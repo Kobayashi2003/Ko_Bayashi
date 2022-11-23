@@ -113,6 +113,7 @@ int main()
 
 `friend declaration 'void report(HasFriend<T>&)' declares a non-template function [-Wnon-template-friend]`
 
+至于为什么会产生这条警告信息，我们先暂时放置，交由后面解释
 
 - **模板类的约束（bound）模板友元**
 

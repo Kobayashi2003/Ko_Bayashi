@@ -21,3 +21,6 @@
 21. [MissingSemester](https://missing-semester-cn.github.io/)
 22. [Numpy中文文档](https://www.numpy.org.cn/)
 23. [Matplotlib中文文档](https://matplotlib.org.cn/)
+24. [Pandas中文文档](https://www.pypandas.cn/)
+25. [PyTorch中文文档](https://pytorch.apachecn.org/docs/1.8/)
+26. [大前端进阶](https://front-end.toimc.com/notes-page/basic/debug/shell.html#bash)

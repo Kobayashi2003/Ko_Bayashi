@@ -64,7 +64,7 @@ friend std::ostream & operator<<(std::ostream & out, A a) {
 
 - 第二种就是将 `operator<<` 重载函数参量中的**非常量引用**改为**常量引用**的形式
 ```cpp
-friend std::ostream & operator<<(std::ostream & out, cosnt A &a) {
+friend std::ostream & operator<<(std::ostream & out, const A &a) {
     std::cout << a._data；
     return out;
 }
