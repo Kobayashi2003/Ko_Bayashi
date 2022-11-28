@@ -52,3 +52,9 @@ Windows 中查看端口占用
 > netstat -ano | findstr 8080
 
 > netsh interface portproxy add v4tov4 listenport=8080 listenaddress=0.0.0.0 connectport=8080 connectaddress=172.27.3.243
+
+
+# 将Linux的终端更换为 fish
+
+> sudo apt-get install fish
+> chsh -s /usr/bin/fish
