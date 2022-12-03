@@ -2,7 +2,7 @@
 // 区分接口继承和实现继承
 
 // 接口及岑和实现继承不同。在 public 继承之下，derived classes 总是继承 base classes 的接口
-// pure virtual 函数之具体指定接口继承
+// pure virtual 函数只具体指定接口继承
 // impure virtual 函数具体指定接口接口继承及确省实现继承
 // non-virtual 函数具体指定接口继承以及强制性实现继承 
 
