@@ -25,3 +25,4 @@
 25. [PyTorch中文文档](https://pytorch.apachecn.org/docs/1.8/)
 26. [大前端进阶](https://front-end.toimc.com/notes-page/basic/debug/shell.html#bash)
 27. [HomeBrew](https://brew.sh/index_zh-cn)
+28. [SFML官网](https://www.sfml-dev.org/index.php)
