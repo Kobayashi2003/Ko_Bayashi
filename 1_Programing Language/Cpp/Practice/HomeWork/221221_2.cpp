@@ -1,449 +1,148 @@
-/*
-Description
-
-对于字符串，实现以下函数，并编写main函数测试这些函数：
-
-padLeft函数：
-
-功能：将一字符串左填充（在左边填充指定字符）至n个字符的长度，可指定填充字符，比如填充“*”，如果不指定填充字符，则填充空格。
-
-提示：为实现以上功能，函数原型可为：
-
-void  padLeft(char string1[], char string2[],  int n, char padding=' ')
-
-或:
-
-string padLeft(string string1, int n, char padding=' ')
-
-这里使用了默认形参。
-
-string1是原字符串，string2是填充之后的结果。
-
-
-
-以下函数都不规定函数原型，请自行设计。
-
-padRight函数：
-
-功能：将一字符串右填充至n个字符的长度，可指定填充字符，比如填充“*”，如果不指定填充字符，则填充空格。
-
-cpy函数：
-
-功能：从第一个字符串复制字符到第二个字符串。可指定复制的起始位置和结束位置，即从startIndex到endIndex之间的所有字符都复制到第二个字符串中。startIndex默认为0， endIndex默认为到字符串尾部。
-
-比如，
-
-cpy(src, dest)： 将src的所有字符都复制到dest
-
-cpy(src, dest, 3)：将src从下标为3的位置直到结尾的所有字符都复制到dest
-
-cpy(src, dest, 3, 5)：将src的第3、4、5个字符复制到dest中
-
-remove函数：
-
-从形参传入一个字符，将该字符从字符串中删除。
-
-remove函数：
-
-从形参传入一个下标index，将index处的字符从字符串中删除。
-
-remove函数：
-
-从形参传入两个下标startIndex和endIndex，将从startIndex到endIndex范围内的字符从字符串中删除。
-
-
-Input
-输入时，每组测试数据包含两行，第一行输入一个整数，代指需要完成的操作，第二行为该操作需要的数据。
-
-对于每个整数对应的操作及其相应数据的输入方式如下（输入的字符串中不包含空格）：
-
-11：对应padLeft，第二行输入字符串string1、整数n，其间以空格分隔（由于没指定填充字符，所以填充空格）
-
-异常处理：如果string1的长度大于等于n，则不填充任何字符。
-
-12：对应padLeft，第二行输入字符串string1、整数n、一个填充字符，其间以空格分隔（填充字符不为空格）
-
-异常处理：如果string1的长度大于等于n，则不填充任何字符。
-
-21：对应padRight，第二行输入字符串string1、整数n，其间以空格分隔（由于没指定填充字符，所以填充空格）
-
-异常处理：如果string1的长度大于等于n，则不填充任何字符。
-
-22：对应padRight，第二行输入字符串string1、整数n、一个填充字符，其间以空格分隔（填充字符不为空格）
-
-异常处理：如果string1的长度大于等于n，则不填充任何字符。
-
-31：对应cpy，第二行输入字符串src
-
-32：对应cpy，第二行输入字符串src和整数startIndex，以空格分隔。复制从startIndex开始的子字符串，下标从0开始。
-
-异常处理：如果startIndex不合法，则不复制任何字符，结果为空字符串。
-
-33：对应cpy，第二行输入字符串src和整数startIndex、endIndex，以空格分隔。
-
-异常处理：如果startIndex、endIndex不合法，则不复制任何字符，结果为空字符串。
-
-41：对应remove，第二行输入字符串和一个字符（以空格分隔），将字符从字符串中删除。
-
-异常处理：如果字符不存在于字符串？如果字符串含多个该字符？如果字符串全是该字符？
-
-42：对应remove，第二行输入字符串和index（以空格分隔），将index处的字符从字符串中删除。
-
-异常处理：如果index不合法，则不删除字符。
-
-43：对应remove，第二行输入字符串和startIndex、endIndex（以空格分隔），将从startIndex到endIndex范围内的字符从字符串中删除。
-
-异常处理：如果startIndex、endIndex不合法，则不删除字符。
-
-
-Output
-对于每组测试数据，输出对应的结果。如果结果为空字符串，则输出一个空行。
-
-Description
-
-对于字符串，实现以下函数，并编写main函数测试这些函数：
-
-padLeft函数：
-
-功能：将一字符串左填充（在左边填充指定字符）至n个字符的长度，可指定填充字符，比如填充“*”，如果不指定填充字符，则填充空格。
-
-提示：为实现以上功能，函数原型可为：
-
-void  padLeft(char string1[], char string2[],  int n, char padding=' ')
-
-或:
-
-string padLeft(string string1, int n, char padding=' ')
-
-这里使用了默认形参。
-
-string1是原字符串，string2是填充之后的结果。
-
-
-
-以下函数都不规定函数原型，请自行设计。
-
-padRight函数：
-
-功能：将一字符串右填充至n个字符的长度，可指定填充字符，比如填充“*”，如果不指定填充字符，则填充空格。
-
-cpy函数：
-
-功能：从第一个字符串复制字符到第二个字符串。可指定复制的起始位置和结束位置，即从startIndex到endIndex之间的所有字符都复制到第二个字符串中。startIndex默认为0， endIndex默认为到字符串尾部。
-
-比如，
-
-cpy(src, dest)： 将src的所有字符都复制到dest
-
-cpy(src, dest, 3)：将src从下标为3的位置直到结尾的所有字符都复制到dest
-
-cpy(src, dest, 3, 5)：将src的第3、4、5个字符复制到dest中
-
-remove函数：
-
-从形参传入一个字符，将该字符从字符串中删除。
-
-remove函数：
-
-从形参传入一个下标index，将index处的字符从字符串中删除。
-
-remove函数：
-
-从形参传入两个下标startIndex和endIndex，将从startIndex到endIndex范围内的字符从字符串中删除。
-
-
-Input
-输入时，每组测试数据包含两行，第一行输入一个整数，代指需要完成的操作，第二行为该操作需要的数据。
-
-对于每个整数对应的操作及其相应数据的输入方式如下（输入的字符串中不包含空格）：
-
-11：对应padLeft，第二行输入字符串string1、整数n，其间以空格分隔（由于没指定填充字符，所以填充空格）
-
-异常处理：如果string1的长度大于等于n，则不填充任何字符。
-
-12：对应padLeft，第二行输入字符串string1、整数n、一个填充字符，其间以空格分隔（填充字符不为空格）
-
-异常处理：如果string1的长度大于等于n，则不填充任何字符。
-
-21：对应padRight，第二行输入字符串string1、整数n，其间以空格分隔（由于没指定填充字符，所以填充空格）
-
-异常处理：如果string1的长度大于等于n，则不填充任何字符。
-
-22：对应padRight，第二行输入字符串string1、整数n、一个填充字符，其间以空格分隔（填充字符不为空格）
-
-异常处理：如果string1的长度大于等于n，则不填充任何字符。
-
-31：对应cpy，第二行输入字符串src
-
-32：对应cpy，第二行输入字符串src和整数startIndex，以空格分隔。复制从startIndex开始的子字符串，下标从0开始。
-
-异常处理：如果startIndex不合法，则不复制任何字符，结果为空字符串。
-
-33：对应cpy，第二行输入字符串src和整数startIndex、endIndex，以空格分隔。
-
-异常处理：如果startIndex、endIndex不合法，则不复制任何字符，结果为空字符串。
-
-41：对应remove，第二行输入字符串和一个字符（以空格分隔），将字符从字符串中删除。
-
-异常处理：如果字符不存在于字符串？如果字符串含多个该字符？如果字符串全是该字符？
-
-42：对应remove，第二行输入字符串和index（以空格分隔），将index处的字符从字符串中删除。
-
-异常处理：如果index不合法，则不删除字符。
-
-43：对应remove，第二行输入字符串和startIndex、endIndex（以空格分隔），将从startIndex到endIndex范围内的字符从字符串中删除。
-
-异常处理：如果startIndex、endIndex不合法，则不删除字符。
-
-
-Output
-对于每组测试数据，输出对应的结果。如果结果为空字符串，则输出一个空行。
-
-Description
-
-对于字符串，实现以下函数，并编写main函数测试这些函数：
-
-padLeft函数：
-
-功能：将一字符串左填充（在左边填充指定字符）至n个字符的长度，可指定填充字符，比如填充“*”，如果不指定填充字符，则填充空格。
-
-提示：为实现以上功能，函数原型可为：
-
-void  padLeft(char string1[], char string2[],  int n, char padding=' ')
-
-或:
-
-string padLeft(string string1, int n, char padding=' ')
-
-这里使用了默认形参。
-
-string1是原字符串，string2是填充之后的结果。
-
-
-
-以下函数都不规定函数原型，请自行设计。
-
-padRight函数：
-
-功能：将一字符串右填充至n个字符的长度，可指定填充字符，比如填充“*”，如果不指定填充字符，则填充空格。
-
-cpy函数：
-
-功能：从第一个字符串复制字符到第二个字符串。可指定复制的起始位置和结束位置，即从startIndex到endIndex之间的所有字符都复制到第二个字符串中。startIndex默认为0， endIndex默认为到字符串尾部。
-
-比如，
-
-cpy(src, dest)： 将src的所有字符都复制到dest
-
-cpy(src, dest, 3)：将src从下标为3的位置直到结尾的所有字符都复制到dest
-
-cpy(src, dest, 3, 5)：将src的第3、4、5个字符复制到dest中
-
-remove函数：
-
-从形参传入一个字符，将该字符从字符串中删除。
-
-remove函数：
-
-从形参传入一个下标index，将index处的字符从字符串中删除。
-
-remove函数：
-
-从形参传入两个下标startIndex和endIndex，将从startIndex到endIndex范围内的字符从字符串中删除。
-
-
-Input
-输入时，每组测试数据包含两行，第一行输入一个整数，代指需要完成的操作，第二行为该操作需要的数据。
-
-对于每个整数对应的操作及其相应数据的输入方式如下（输入的字符串中不包含空格）：
-
-11：对应padLeft，第二行输入字符串string1、整数n，其间以空格分隔（由于没指定填充字符，所以填充空格）
-
-异常处理：如果string1的长度大于等于n，则不填充任何字符。
-
-12：对应padLeft，第二行输入字符串string1、整数n、一个填充字符，其间以空格分隔（填充字符不为空格）
-
-异常处理：如果string1的长度大于等于n，则不填充任何字符。
-
-21：对应padRight，第二行输入字符串string1、整数n，其间以空格分隔（由于没指定填充字符，所以填充空格）
-
-异常处理：如果string1的长度大于等于n，则不填充任何字符。
-
-22：对应padRight，第二行输入字符串string1、整数n、一个填充字符，其间以空格分隔（填充字符不为空格）
-
-异常处理：如果string1的长度大于等于n，则不填充任何字符。
-
-31：对应cpy，第二行输入字符串src
-
-32：对应cpy，第二行输入字符串src和整数startIndex，以空格分隔。复制从startIndex开始的子字符串，下标从0开始。
-
-异常处理：如果startIndex不合法，则不复制任何字符，结果为空字符串。
-
-33：对应cpy，第二行输入字符串src和整数startIndex、endIndex，以空格分隔。
-
-异常处理：如果startIndex、endIndex不合法，则不复制任何字符，结果为空字符串。
-
-41：对应remove，第二行输入字符串和一个字符（以空格分隔），将字符从字符串中删除。
-
-异常处理：如果字符不存在于字符串？如果字符串含多个该字符？如果字符串全是该字符？
-
-42：对应remove，第二行输入字符串和index（以空格分隔），将index处的字符从字符串中删除。
-
-异常处理：如果index不合法，则不删除字符。
-
-43：对应remove，第二行输入字符串和startIndex、endIndex（以空格分隔），将从startIndex到endIndex范围内的字符从字符串中删除。
-
-异常处理：如果startIndex、endIndex不合法，则不删除字符。
-
-
-Output
-对于每组测试数据，输出对应的结果。如果结果为空字符串，则输出一个空行。
-
-Description
-
-对于字符串，实现以下函数，并编写main函数测试这些函数：
-
-padLeft函数：
-
-功能：将一字符串左填充（在左边填充指定字符）至n个字符的长度，可指定填充字符，比如填充“*”，如果不指定填充字符，则填充空格。
-
-提示：为实现以上功能，函数原型可为：
-
-void  padLeft(char string1[], char string2[],  int n, char padding=' ')
-
-或:
-
-string padLeft(string string1, int n, char padding=' ')
-
-这里使用了默认形参。
-
-string1是原字符串，string2是填充之后的结果。
-
-
-
-以下函数都不规定函数原型，请自行设计。
-
-padRight函数：
-
-功能：将一字符串右填充至n个字符的长度，可指定填充字符，比如填充“*”，如果不指定填充字符，则填充空格。
-
-cpy函数：
-
-功能：从第一个字符串复制字符到第二个字符串。可指定复制的起始位置和结束位置，即从startIndex到endIndex之间的所有字符都复制到第二个字符串中。startIndex默认为0， endIndex默认为到字符串尾部。
-
-比如，
-
-cpy(src, dest)： 将src的所有字符都复制到dest
-
-cpy(src, dest, 3)：将src从下标为3的位置直到结尾的所有字符都复制到dest
-
-cpy(src, dest, 3, 5)：将src的第3、4、5个字符复制到dest中
-
-remove函数：
-
-从形参传入一个字符，将该字符从字符串中删除。
-
-remove函数：
-
-从形参传入一个下标index，将index处的字符从字符串中删除。
-
-remove函数：
-
-从形参传入两个下标startIndex和endIndex，将从startIndex到endIndex范围内的字符从字符串中删除。
-
-
-Input
-输入时，每组测试数据包含两行，第一行输入一个整数，代指需要完成的操作，第二行为该操作需要的数据。
-
-对于每个整数对应的操作及其相应数据的输入方式如下（输入的字符串中不包含空格）：
-
-11：对应padLeft，第二行输入字符串string1、整数n，其间以空格分隔（由于没指定填充字符，所以填充空格）
-
-异常处理：如果string1的长度大于等于n，则不填充任何字符。
-
-12：对应padLeft，第二行输入字符串string1、整数n、一个填充字符，其间以空格分隔（填充字符不为空格）
-
-异常处理：如果string1的长度大于等于n，则不填充任何字符。
-
-21：对应padRight，第二行输入字符串string1、整数n，其间以空格分隔（由于没指定填充字符，所以填充空格）
-
-异常处理：如果string1的长度大于等于n，则不填充任何字符。
-
-22：对应padRight，第二行输入字符串string1、整数n、一个填充字符，其间以空格分隔（填充字符不为空格）
-
-异常处理：如果string1的长度大于等于n，则不填充任何字符。
-
-31：对应cpy，第二行输入字符串src
-
-32：对应cpy，第二行输入字符串src和整数startIndex，以空格分隔。复制从startIndex开始的子字符串，下标从0开始。
-
-异常处理：如果startIndex不合法，则不复制任何字符，结果为空字符串。
-
-33：对应cpy，第二行输入字符串src和整数startIndex、endIndex，以空格分隔。
-
-异常处理：如果startIndex、endIndex不合法，则不复制任何字符，结果为空字符串。
-
-41：对应remove，第二行输入字符串和一个字符（以空格分隔），将字符从字符串中删除。
-
-异常处理：如果字符不存在于字符串？如果字符串含多个该字符？如果字符串全是该字符？
-
-42：对应remove，第二行输入字符串和index（以空格分隔），将index处的字符从字符串中删除。
-
-异常处理：如果index不合法，则不删除字符。
-
-43：对应remove，第二行输入字符串和startIndex、endIndex（以空格分隔），将从startIndex到endIndex范围内的字符从字符串中删除。
-
-异常处理：如果startIndex、endIndex不合法，则不删除字符。
-
-
-Output
-对于每组测试数据，输出对应的结果。如果结果为空字符串，则输出一个空行。
-
-每行行首与行尾无多余空格，第一行之前与最后一行之后无多余空行。
-
-Sample Input 1 
-
-11
-abcdefgh 10
-12
-abcdefgh 10 *
-21
-abcdefgh 10
-22
-abcdefgh 10 *
-31
-abcdefgh
-32
-abcdef 1
-33
-abcdef 1 5
-41
-abcdef a
-42
-abcdef 1
-43
-abcdef 1 4
-
-Sample Output 1
-
-  abcdefgh
-**abcdefgh
-abcdefgh  
-abcdefgh**
-abcdefgh
-bcdef
-bcdef
-bcdef
-acdef
-af
-*/
-
 #include <iostream>
+#include <string>
 
 using namespace std;
 
+// stringTools.h
+namespace stringTools {
+    string padLeft(string str, int n, char padding=' ');
+    string padRight(string str, int n, char padding=' ');
+    string cpy(string str1, int startIndex=0, int endIndex=-1);
+    string cpy(string str1, string str2, int startIndex=0, int endIndex=-1);
+    string remove(string str, char c);
+    string remove(string str, int);
+    string remove(string str, int startIndex, int endIndex);
+};
+
+// stringTools.cpp
+// #include "stringTools.h"
+string stringTools::padLeft(string str, int n, char padding) {
+    if (int len = str.length(); len < n) {
+        str.insert(0, n - len, padding);
+    }
+    return str;
+}
+
+string stringTools::padRight(string str, int n, char padding) {
+    if (int len = str.length(); len < n) {
+        str.insert(len, n - len, padding);
+    }
+    return str;
+}
+
+string stringTools::cpy(string str1, string str2, int startIndex, int endIndex) { // copy str1 to str2
+    size_t st_startIndex = startIndex >= 0 ? startIndex : str1.length() + startIndex;
+    // if (startIndex < 0) return "";
+    // size_t st_startIndex = startIndex;
+    size_t st_endIndex = endIndex >= 0 ? endIndex : str1.length() + endIndex; 
+    if (st_startIndex > st_endIndex || st_startIndex >= str1.length() || st_endIndex >= str1.length()) {
+        return "";
+    }
+    str2 += str1.substr(st_startIndex, st_endIndex - st_startIndex + 1);
+    return str2;
+}
+
+string stringTools::cpy(string str1, int startIndex, int endIndex) {
+    return stringTools::cpy(str1, "", startIndex, endIndex);
+}
+
+string stringTools::remove(string str, char c) { // earse all value c in str
+    for (size_t i = 0; i < str.length(); i++) {
+        if (str[i] == c) {
+            str.erase(i, 1);
+            i--;
+        }
+    }
+    return str;
+}
+
+string stringTools::remove(string str, int index) {
+    size_t st_index = index >= 0 ? index : str.length() + index;
+    if (st_index >= str.length()) {
+        return str;
+    }
+    str.erase(index, 1);
+    return str;
+}
+
+string stringTools::remove(string str, int startIndex, int endIndex) {
+    size_t st_startIndex = startIndex >= 0 ? startIndex : str.length() + startIndex;
+    // if (startIndex < 0) return "";
+    // size_t st_startIndex = startIndex;
+    size_t st_endIndex = endIndex >= 0 ? endIndex : str.length() + endIndex;
+    if (st_startIndex > st_endIndex || st_startIndex >= str.length() || st_endIndex >= str.length()) {
+        return str;
+    }
+    str.erase(startIndex, endIndex - startIndex + 1);
+    return str;
+}
+
+// main.cpp
 int main() {
 
+    while(true) {
+        int N; cin >> N;
+        if (cin.fail()) {
+            break;
+        }
+        string str; cin >> str;
 
+        switch (N) {
+            case 11: {
+                int n; cin >> n;
+                str = stringTools::padLeft(str, n);
+                break;
+            }
+            case 12: {
+                int n; cin >> n;
+                char padding; cin >> padding;
+                str = stringTools::padLeft(str, n, padding);
+                break;
+            }
+            case 21: {
+                int n; cin >> n;
+                str = stringTools::padRight(str, n);
+                break;
+            }
+            case 22: {
+                int n; cin >> n;
+                char padding; cin >> padding;
+                str = stringTools::padRight(str, n, padding);
+                break;
+            }
+            case 31: {
+                str = stringTools::cpy(str);
+                break;
+            }
+            case 32: {
+                int startIndex; cin >> startIndex;
+                str = stringTools::cpy(str, startIndex);
+                break;
+            }
+            case 33: {
+                int startIndex; cin >> startIndex;
+                int endIndex; cin >> endIndex;
+                str = stringTools::cpy(str, startIndex, endIndex);
+                break;
+            }
+            case 41: {
+                char c; cin >> c;
+                str = stringTools::remove(str, c);
+                break;
+            }
+            case 42: {
+                int index; cin >> index;
+                str = stringTools::remove(str, index);
+                break;
+            }
+            case 43: {
+                int startIndex; cin >> startIndex;
+                int endIndex; cin >> endIndex;
+                str = stringTools::remove(str, startIndex, endIndex);
+                break;
+            }
+        }
+        cout << str << endl;
+    }
     return 0;
 }
