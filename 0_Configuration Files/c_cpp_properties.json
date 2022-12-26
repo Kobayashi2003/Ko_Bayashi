@@ -3,7 +3,10 @@
         {
             "name": "Windows-gcc-x64",
             "includePath": [
-                "${workspaceFolder}/**"
+                "${default}",
+                "${workspaceFolder}/**",
+                "D:/Program/TDM-GCC/lib/gcc/x86_64-w64-mingw32/10.3.0/include/**",
+                "D:/Program/TDM-GCC/lib/gcc/x86_64-w64-mingw32/10.3.0/include/c++/**"
             ],
             "defines": [
                 "_DEBUG",
@@ -12,8 +15,6 @@
             ],
             "windowsSdkVersion": "10.0.19041.0",
             "compilerPath": "D:/Program/VS2022/IDE/VC/Tools/MSVC/14.33.31629/bin/Hostx64/x64/cl.exe",
-            // "cStandard": "c17",
-            // "cppStandard": "c++17",
             "cStandard": "${default}",
             "cppStandard": "${default}",
             "intelliSenseMode": "windows-msvc-x64"

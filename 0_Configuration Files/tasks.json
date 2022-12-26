@@ -170,7 +170,7 @@
                 "-static-libgcc",
                 "-Wno-format",
                 "-finput-charset=UTF-8",
-                "-fexec-charset=UTF-8"
+                "-fexec-charset=UTF-8",
             ],
             "presentation": {
                 "echo": true,
