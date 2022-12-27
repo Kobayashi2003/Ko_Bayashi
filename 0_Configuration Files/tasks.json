@@ -167,10 +167,15 @@
                 "${workspaceFolder}\\Debug\\${fileBasenameNoExtension}.exe",
                 "-ggdb3",
                 "-Wall",
+
                 "-static-libgcc",
+                "-lEasyX", // static link EasyX
+                "-lgdi32",
+                "-lole32",
+                
                 "-Wno-format",
                 "-finput-charset=UTF-8",
-                "-fexec-charset=UTF-8",
+                "-fexec-charset=UTF-8"
             ],
             "presentation": {
                 "echo": true,
@@ -203,7 +208,7 @@
                 "isDefault": true
             },
             "detail": "Compile C file"
-        },
+        }
 
     ],
     "version": "2.0.0"
