@@ -1,7 +1,7 @@
-#include "Tetris.h"
+#include "TetrisInTerminal.h"
 
 int main() {
-    Tetris game(20, 10, 163, 133, 36);
-    game.play();
+    TetrisInTerminal tetris;
+    tetris.play();
     return 0;
 }

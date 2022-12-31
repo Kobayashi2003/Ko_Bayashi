@@ -13,12 +13,9 @@ void Tetris::showDescription() { // done
 }
 
 
-Tetris::Tetris(int rows, int cols, int leftMargin, int topMargin, int blockSize)  { // done
+Tetris::Tetris(int rows, int cols)  { // done
     this->rows = rows;
     this->cols = cols;
-    this->leftMargin = leftMargin;
-    this->topMargin = topMargin;
-    this->blockSize = blockSize;
 }
 
 Tetris::~Tetris() { // done
@@ -27,7 +24,8 @@ Tetris::~Tetris() { // done
 }
 
 
-void Tetris::play() {
+void Tetris::play() { // done
+
     init();
     
     // create the first block
@@ -37,34 +35,48 @@ void Tetris::play() {
     createPreBlock();
 
     startTime = clock();
-    // create a new thread to update the current time and the game time
-    std::thread t_time(&Tetris::updateTimer, this);
 
-    // create a new thread to control the key event
+    // create a thread to update the time in Tetris
+    auto UpdateTime = [&]() {
+        while (gameStart) {
+            lock_updateTimer = false;
+            updateTimer();
+            lock_updateTimer = true;
+        }
+    };
+    std::thread t_time(UpdateTime);
+    p_t_updateTimer = &t_time;
+
+    // create a thread to accept the key event
     auto KeyEvent = [&]() {
         while (gameStart) {
-            pause();
+            lock_keyEvent = false;
+            checkPause();
             keyEvent();
+            lock_keyEvent = true;
         }
     };
     std::thread t_key(KeyEvent);
-    
-    // create a new thread to control the drop of the block
+    p_t_keyEvent = &t_key;
+
+    // create a thread to control the drop of the curBlock
     auto DropBlock = [&]() {
         while (gameStart) {
-            pause();
-            keyEvent();
+            lock_dropBlock = false;
+            checkPause();
             std::this_thread::sleep_for(std::chrono::milliseconds(curSpeed - speedUp));
             drop();
+            lock_dropBlock = true;
         }
     };
     std::thread t_drop(DropBlock);
+    p_t_dropBlock = &t_drop;
 
-    // create a new thread to control the preview of the block
+    // create a thread to control the preview of the curBlock
     auto CreatePreBlock = [&]() {
         while (gameStart) {
-            pause();
-            droopLock = false;
+            lock_createPreBlock = false;
+            checkPause();
             int c_0col = curBlock->getPoints()[0].col;
             int p_0col = preBlock.getPoints()[0].col;
             int c_3col = curBlock->getPoints()[3].col;
@@ -73,18 +85,20 @@ void Tetris::play() {
             if (preBlock.checkCollision(board) || c_0col != p_0col || c_3col != p_3col) {
                 createPreBlock();
             }
-            droopLock = true;
+
+            lock_createPreBlock = true;
         }
     };
     std::thread t_pre(CreatePreBlock);
 
     // the main loop of the game, mainly used to check the update flags and game state flags
     for (; gameStart; delay_fps(60)) {
+        
         if (updateWindowFlag) {
-            tetrisInTerminal();
-            updateWindow();
+            updateWindowFunc();
             updateWindowFlag = false;
         }
+
         if (updateScoreLevelFlag) {
             updateScore();
             updateLevel();
@@ -102,32 +116,29 @@ void Tetris::play() {
         if (gameOver) {
             std::cout << "gameOver" << std::endl;
             gameStart = false;
-            // release the resources
-            t_time.detach();
-            t_key.detach();
-            t_drop.detach();
-            t_pre.detach();
+            // release the threads
+            p_t_updateTimer->join();
+            p_t_keyEvent->join();
+            p_t_dropBlock->join();
+            p_t_createPreBlock->join();
+
+            p_t_updateTimer->detach();
+            p_t_keyEvent->detach();
+            p_t_dropBlock->detach();
+            p_t_createPreBlock->detach();
         }
     }
 }
 
 void Tetris::init() {
+
+    // init the description
+    initDescription();
+
     // set the random seed
     srand((unsigned)time(nullptr));
     curBlock = nullptr;
     nextBlock = nullptr;
-
-    // load the bgm
-    
-
-    // load the background image
-
-    // load the block images
-    // imgsBlock = Block::getImgs();
-
-    // load the game over image
-
-    // load the game win image
 
     // init the board
     clearBoard();
@@ -142,6 +153,7 @@ void Tetris::init() {
     updateWindowFlag = false;
     updateScoreLevelFlag = false;
 
+    // init the game status
     eliminatedLines = 0;
     combo = 0;
     score = 0;
@@ -149,8 +161,25 @@ void Tetris::init() {
     curSpeed = speed[curLevel];
     speedUp = 0;
 
+    // init the top 10 scores
     top10Scores = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-    // load the top 10 scores from file top10Scores.txt
+    loadTop10Scores();
+}
+
+void Tetris::clearBoard() { // done
+    // clear all the elements in the Board
+    board.clear();
+    // reset the Board
+    for (int i = 0; i < rows; ++i) {
+        std::vector <int> one_row;
+        for (int j = 0; j < cols; ++j) {
+            one_row.push_back(EMPTY);
+        }
+        board.push_back(one_row);
+    }
+} 
+
+void Tetris::loadTop10Scores() {
     std::ifstream fin;
     fin.open("top10Scores.txt");
     if (!fin.is_open()) {
@@ -168,23 +197,6 @@ void Tetris::init() {
     }
     fin.close();
 }
-
-void Tetris::pause() {
-    while (gamePause) { /*blank run*/ }
-}
-
-void Tetris::clearBoard() { // done
-    // clear all the elements in the Board
-    board.clear();
-    // reset the Board
-    for (int i = 0; i < rows; ++i) {
-        std::vector <int> one_row;
-        for (int j = 0; j < cols; ++j) {
-            one_row.push_back(EMPTY);
-        }
-        board.push_back(one_row);
-    }
-} 
 
 void Tetris::createBlock() { // done
     delete curBlock;
@@ -263,15 +275,6 @@ void Tetris::updateTimer() { // done
 void Tetris::delay_fps(int fps) { // done
     // convert fps to delay
     std::this_thread::sleep_for(std::chrono::milliseconds(1000 / fps)); // delay 1/fps seconds, 1000ms = 1s, 1s/fps = 1/fps seconds
-}
-
-void Tetris::updateWindow() { // TODO
-
-}
-
-void Tetris::checkGameOver() { // done
-    // if the new block is not valid, then the game is over
-    gameOver = curBlock->checkCollision(board);
 }
 
 void Tetris::keyEvent() { // Done
@@ -354,7 +357,6 @@ void Tetris::keyEvent() { // Done
 		moveLeftRight(dx);
 		dx = 0;
 	}
-
 }
 
 void Tetris::drop() { // done
@@ -370,7 +372,7 @@ void Tetris::drop() { // done
 }
 
 void Tetris::droop() { // Done
-    while (!droopLock) {/* blank */} // blank run, wait for the complete of preBlock
+    while (!lock_createPreBlock) {/* blank */} // blank run, wait for the complete of preBlock
     Block* oldBlock = curBlock;
     Block* droopBlock = new Block();
     *droopBlock = preBlock;
@@ -403,119 +405,13 @@ bool Tetris::checkCollision() { // Done
     return curBlock->checkCollision(board);
 }
 
-void Tetris::tetrisInTerminal() { // Done
-    Point* blockPoints = curBlock->getPoints();
+void Tetris::checkGameOver() { // done
+    // if the new block is not valid, then the game is over
+    gameOver = curBlock->checkCollision(board);
+}
 
-    system("cls");
-    for (int i = 0; i < rows; ++i) {
-        for (int j = 0; j < cols; ++j) {
-            bool hasBlock = false;
-            for (int k = 0; k < 4; ++k) {
-                if (i == blockPoints[k].row && j == blockPoints[k].col) {
-                    hasBlock = true;
-                }
-            }
-            if (hasBlock) {
-                std::cout << curBlock->getType();
-                continue;
-            }
-            bool hasPreBlock = false;
-            for (int k = 0; k < 4; ++k) {
-                if (i == preBlock.getPoints()[k].row && j == preBlock.getPoints()[k].col) {
-                    hasPreBlock = true;
-                }
-            }
-            if (hasPreBlock) {
-                std::cout << "@";
-                continue;
-            }
-            if (board[i][j] == EMPTY) {
-                std::cout << "¡¤";
-                continue;
-            }
-            std::cout << board[i][j];
-        }
-        int nextType = nextBlock->getType();
-        if (i == 1) {
-            std::cout << "\t\t";
-            switch (nextType) {
-            default:
-                std::cout << " " << 0 << " ";
-                break;
-            }
-            switch (nextType) {
-            case 0: 
-                std::cout << "[" << 1 << "]"; break;
-            default:
-                std::cout << " " << 1 << " "; break;
-            }
-        }
-        else if (i == 2) {
-            std::cout << "\t\t";
-            switch (nextType) {
-            case 1: case 4: case 6:
-                std::cout << "[" << 2 << "]"; break;
-            default:
-                std::cout << " " << 2 << " "; break;
-            }
-            switch (nextType) {
-            case 0: case 2: case 3: case 4: case 5: case 6:
-                std::cout << "[" << 3 << "]"; break;
-            default:
-                std::cout << " " << 3 << " "; break;
-            }
-        }
-        else if (i == 3) {
-            std::cout << "\t\t";
-            switch (nextType) {
-            case 1: case 2: case 3: case 6:
-                std::cout << "[" << 4 << "]"; break;
-            default:
-                std::cout << " " << 4 << " "; break;
-            }
-            switch (nextType) {
-            case 0: case 1: case 2: case 3: case 4: case 5: case 6:
-                std::cout << "[" << 5 << "]"; break;
-            default:
-                std::cout << " " << 5 << " "; break;
-            }
-        }
-        else if (i == 4) {
-            std::cout << "\t\t";
-            switch (nextType) {
-            case 2: case 5:
-                std::cout << "[" << 6 << "]"; break;
-            default:
-                std::cout << " " << 6 << " "; break;
-            }
-            switch (nextType) {
-            case 0: case 1: case 3: case 4: case 5:
-                std::cout << "[" << 7 << "]"; break;
-            default:
-                std::cout << " " << 7 << " "; break;
-            }
-        }
-        else if (i == 7) {
-            std::cout << "\t\tscore: " << score;
-        }
-        else if (i == 8) {
-            std::cout << "\t\tlevel: " << curLevel;
-        }
-        else if (i == 9) {
-            std::cout << "\t\tTime: " << gameTime;
-        }
-        else if (i == 10) {
-            std::cout << "\t\tSpeed: " << curSpeed;
-        }
-        std::cout << std::endl;
+void Tetris::checkPause() {
+    while (gamePause) {
+        // blank run, wait for the game to be resumed
     }
-
-    std::cout << "\n\n\
-    'A' 'LEFT' move left\n\
-    'D' 'RIGHT' move right\n\
-    'W' 'UP' rotate\n\
-    'S' 'DOWN' drop speedup\n\
-    'SPACE' droop\n\
-    'P' pause\n\
-    'Q' 'ESC' quit\n";
 }
