@@ -1,7 +1,6 @@
 #include "Block.h"
 
 int Block::blockWidth = 36;
-// IMAGE* Block::imgs[7] = { nullptr, };
 
 Block::Block() {
 
@@ -16,9 +15,6 @@ Block::Block() {
         blockPoints[i].row = blocks[blockType][i] / 2;
         blockPoints[i].col = blocks[blockType][i] % 2; 
     }
-
-    // set the image of the block
-    // img = imgs[blockType];
 }
 
 void Block::initImages() { // TODO
@@ -57,10 +53,6 @@ Point* Block::getPoints() { // done
     return blockPoints;
 }
 
-// IMAGE** Block::getImgs() { // done
-//     return imgs;
-// }
-
 bool Block::checkCollision(const vv<int> &board) { // done
     int rows = board.size();
     int cols = board[0].size();
@@ -81,9 +73,6 @@ void Block::solidify(vv<int> &board) { // done
     }
 }
 
-// void Block::draw(int leftMargin, int topMargin) { // TODO
-// }
-
 Block& Block::operator=(const Block& other) { // done
     if (this == &other) {
         return *this;
@@ -94,8 +83,6 @@ Block& Block::operator=(const Block& other) { // done
     for (int i = 0; i < 4; ++i) {
         this->blockPoints[i] = other.blockPoints[i];
     }
-
-    // this->img = other.img;
 
     return *this;
 }

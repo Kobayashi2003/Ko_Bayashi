@@ -72,6 +72,8 @@ private:
     bool checkCollision();
     // checkGameOver function will  judge whether the game is over by check whether the newly generated block collides with other blocks
     void checkGameOver();
+    void updateTop10ScoresFile();
+    void updateHistoryFile();
 
     // pause function is used to pause the program
     void checkPause();

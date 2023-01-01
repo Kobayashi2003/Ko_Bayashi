@@ -3,10 +3,97 @@
 
 using TiT = TetrisInTerminal;
 
-TiT::TetrisInTerminal(int rows, int cols) : Tetris(rows, cols) {}
+TiT::TetrisInTerminal(int rows, int cols) : Tetris(rows, cols) { loadConfig(); }
 
 TiT::TetrisInTerminal() : TetrisInTerminal(20, 10) {}
 
+
+void TiT::loadConfig() {
+    // load config from "titconfig" file
+    std::ifstream fin("titconfig");
+    if (!fin.is_open()) {
+        // if the file is not exist, create it, and write the default config 
+        std::ofstream fout("titconfig");
+        fout << "curBlock_icons = #######" << std::endl;
+        fout << "background_icon = ." << std::endl;
+        fout << "preBlock_icon = @" << std::endl;
+
+        fout << "showNextBlock = true" << std::endl;
+        fout << "showPreBlock = true" << std::endl;
+        fout << "showCurBlock = true" << std::endl;
+        fout << "showBackground = true" << std::endl;
+        fout << "showSolidBlock = true" << std::endl;
+        fout << "showScore = true" << std::endl;
+        fout << "showLevel = true" << std::endl;
+        fout << "showLines = true" << std::endl;
+        fout << "showTime = true" << std::endl;
+        fout << "showSpeed = true" << std::endl;
+        fout << "showHelp = true" << std::endl;
+
+        fout << "COLOR = true" << std::endl;
+        fout << "SOUND = true" << std::endl;
+    }
+
+    else {
+        // load the config from the file
+        std::string str;
+        while (fin >> str) {
+            if (str == "curBlock_icons") {
+                fin >> str; fin >> str;
+                for (int i = 0; i < 7; ++i) {
+                    curBlock_icons[i] = str[i];
+                }
+            } else if (str == "background_icon") {
+                fin >> str; fin >> str;
+                background_icon = str[0];
+            } else if (str == "preBlock_icon") {
+                fin >> str; fin >> str;
+                preBlock_icon = str[0];
+            } else if (str == "showNextBlock") {
+                fin >> str; fin >> str;
+                showNextBlock = (str == "true");
+            } else if (str == "showPreBlock") {
+                fin >> str; fin >> str;
+                showPreBlock = (str == "true");
+            } else if (str == "showCurBlock") {
+                fin >> str; fin >> str;
+                showCurBlock = (str == "true");
+            } else if (str == "showBackground") {
+                fin >> str; fin >> str;
+                showBackground = (str == "true");
+            } else if (str == "showSolidBlock") {
+                fin >> str; fin >> str;
+                showSolidBlock = (str == "true");
+            } else if (str == "showScore") {
+                fin >> str; fin >> str;
+                showScore = (str == "true");
+            } else if (str == "showLevel") {
+                fin >> str; fin >> str;
+                showLevel = (str == "true");
+            } else if (str == "showLines") {
+                fin >> str; fin >> str;
+                showLines = (str == "true");
+            } else if (str == "showTime") {
+                fin >> str; fin >> str;
+                showTime = (str == "true");
+            } else if (str == "showSpeed") {
+                fin >> str; fin >> str;
+                showSpeed = (str == "true");
+            } else if (str == "showHelp") {
+                fin >> str; fin >> str;
+                showHelp = (str == "true");
+            } else if (str == "COLOR") {
+                fin >> str; fin >> str;
+                COLOR = (str == "true");
+            } else if (str == "SOUND") {
+                fin >> str; fin >> str;
+                SOUND = (str == "true");
+            } else {
+                std::cerr << "Error: unknown config: " << str << std::endl;
+            }
+        }
+    }
+}
 
 void TiT::updateWindowFunc() {
     // clear the screen 
@@ -172,6 +259,9 @@ void TiT::updateWindowFunc() {
         else if (showSpeed && row == 10) {
             std::cout << "\t\tSpeed: " << speed;
         }
+        else if (showLines && row == 11) {
+            std::cout << "\t\tLines: " << eliminatedLines;
+        }
         std::cout << std::endl;
     }
     
@@ -224,4 +314,3 @@ void TiT::color(std::string str, int color) {
     }
     std::cout << str << "\033[0m";
 }
-

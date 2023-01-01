@@ -11,9 +11,9 @@ public:
 
 private:
 
-    virtual void updateWindowFunc();
-
     void loadConfig(); 
+
+    virtual void updateWindowFunc();
 
     bool haveCurBlock(int row, int col);
     bool havePreBlock(int row, int col);

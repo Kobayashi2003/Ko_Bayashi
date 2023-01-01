@@ -66,6 +66,7 @@ void Tetris::play() { // done
             checkPause();
             std::this_thread::sleep_for(std::chrono::milliseconds(curSpeed - speedUp));
             drop();
+            speedUp = 0;
             lock_dropBlock = true;
         }
     };
@@ -114,23 +115,42 @@ void Tetris::play() { // done
         }
 
         if (gameOver) {
-            std::cout << "gameOver" << std::endl;
+            std::cout << "You lose!" << std::endl;
             gameStart = false;
-            // release the threads
-            p_t_updateTimer->join();
-            p_t_keyEvent->join();
-            p_t_dropBlock->join();
-            p_t_createPreBlock->join();
 
-            p_t_updateTimer->detach();
-            p_t_keyEvent->detach();
-            p_t_dropBlock->detach();
-            p_t_createPreBlock->detach();
+        } else if (gameWin) {
+            std::cout << "You win!" << std::endl;
+            gameStart = false;
+        }
+
+        if (!gameStart) {
+            // release the threads
+            t_time.join();
+            t_key.join();
+            t_drop.join();
+            t_pre.join();
+
+            // update the file
+            updateTop10ScoresFile();
+            updateHistoryFile();
+
+            // 'q' to quit the game
+            // 'r' to restart the game
+
+            std::cout << "[q] to quit the game" << std::endl;
+            std::cout << "[r] to restart the game" << std::endl;
+            char c;
+            std::cin >> c;
+            if (c == 'r') {
+                break;
+            } else {
+                return;
+            }
         }
     }
 }
 
-void Tetris::init() {
+void Tetris::init() { // done
 
     // init the description
     initDescription();
@@ -179,7 +199,7 @@ void Tetris::clearBoard() { // done
     }
 } 
 
-void Tetris::loadTop10Scores() {
+void Tetris::loadTop10Scores() { // done
     std::ifstream fin;
     fin.open("top10Scores.txt");
     if (!fin.is_open()) {
@@ -207,7 +227,7 @@ void Tetris::createBlock() { // done
     curBlock->moveLeftRight(move);
 }
 
-void Tetris::createPreBlock() { // Done
+void Tetris::createPreBlock() { // done
     Block tmpBlock;
     preBlock = *curBlock;
     while (!preBlock.checkCollision(board)) {
@@ -277,7 +297,7 @@ void Tetris::delay_fps(int fps) { // done
     std::this_thread::sleep_for(std::chrono::milliseconds(1000 / fps)); // delay 1/fps seconds, 1000ms = 1s, 1s/fps = 1/fps seconds
 }
 
-void Tetris::keyEvent() { // Done
+void Tetris::keyEvent() { // done
     // Direction key
     // up: u_char key = 224; key = 72;
     //     stand for rotate the block
@@ -327,12 +347,6 @@ void Tetris::keyEvent() { // Done
 			}
 		}
 	}
-    else {
-        // if the key is not pressed, then the speed will be set to the normal speed
-        if (clock() - pressTime > 1) {
-            speedUp = 0;
-        }
-    }
 
     if (gamePause || gameOver ) {
         return;
@@ -344,7 +358,7 @@ void Tetris::keyEvent() { // Done
 	}
 
 	if (speedUpFlag) {
-		speedUp = curSpeed / 2;
+        drop();
 		speedUpFlag = false;
 	}
 
@@ -371,7 +385,7 @@ void Tetris::drop() { // done
     updateWindowFlag = true;
 }
 
-void Tetris::droop() { // Done
+void Tetris::droop() { // done
     while (!lock_createPreBlock) {/* blank */} // blank run, wait for the complete of preBlock
     Block* oldBlock = curBlock;
     Block* droopBlock = new Block();
@@ -401,7 +415,7 @@ void Tetris::rotate() { // done
     updateWindowFlag = true;
 }
 
-bool Tetris::checkCollision() { // Done
+bool Tetris::checkCollision() { // done
     return curBlock->checkCollision(board);
 }
 
@@ -410,7 +424,27 @@ void Tetris::checkGameOver() { // done
     gameOver = curBlock->checkCollision(board);
 }
 
-void Tetris::checkPause() {
+void Tetris::updateTop10ScoresFile() { // done
+    // compare the score with the top 10 scores
+    // if the score is in the top 10, then update the top 10 scores file
+    for (int i = 0; i < 10; ++i) {
+        if (score > top10Scores[i]) {
+            // put the score in this position
+            top10Scores.insert(top10Scores.begin() + i, score);
+            top10Scores.pop_back();
+        }
+    }
+}
+
+void Tetris::updateHistoryFile() { // done
+    std::ofstream fout;
+    fout.open("history.txt", std::ios::app);
+    // [starttime] [gametime] [score]
+    fout << "[StartTime: " << startTime << "] [GameTime: " << gameTime << "] [Score: " << score << "]" << std::endl;
+    fout.close();
+}
+
+void Tetris::checkPause() { // done
     while (gamePause) {
         // blank run, wait for the game to be resumed
     }

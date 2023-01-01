@@ -1,5 +1,6 @@
+#pragma once
+
 #include "Point.h"
-// #include <graphics.h>
 #include <vector>
 #include <cstdlib>
 
@@ -24,12 +25,9 @@ public:
     /* the interface offered to the Tetris class */ 
     int getType();
     Point* getPoints();
-    // static IMAGE** getImgs();
 
     bool checkCollision(const vv<int> &board);
     void solidify(vv<int> &board);
-
-    // void draw(int leftMargin, int topMargin);
 
     Block& operator=(const Block& other);
 
@@ -81,7 +79,4 @@ private:
     Point blockPoints[4];
 
     static int blockWidth;
-
-    // static IMAGE* imgs[7];
-    // IMAGE* img;
 };
