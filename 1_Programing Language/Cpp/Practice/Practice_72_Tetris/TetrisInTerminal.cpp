@@ -278,6 +278,13 @@ void TiT::updateWindowFunc() {
     }
 }
 
+void TiT::getConsoleSize() {
+    // the size of the console is save in the file "ConsoleSize"
+    // the first line is the console width, the second line is the console height
+    std::ifstream fin("ConsoleSize");
+    // TODO
+}
+
 bool TiT::haveCurBlock(int row, int col) {
     for (int i = 0; i < 4; ++i) {
         if (curBlockPoints[i].row == row && curBlockPoints[i].col == col) {

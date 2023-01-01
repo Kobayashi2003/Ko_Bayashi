@@ -434,6 +434,13 @@ void Tetris::updateTop10ScoresFile() { // done
             top10Scores.pop_back();
         }
     }
+    // update the top 10 scores file
+    std::ofstream fout;
+    fout.open("top10scores.txt");
+    for (int i = 0; i < 10; ++i) {
+        fout << top10Scores[i] << std::endl;
+    }
+    fout.close();
 }
 
 void Tetris::updateHistoryFile() { // done

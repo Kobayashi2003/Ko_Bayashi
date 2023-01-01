@@ -15,12 +15,19 @@ private:
 
     virtual void updateWindowFunc();
 
+    void getConsoleSize();
+
     bool haveCurBlock(int row, int col);
     bool havePreBlock(int row, int col);
 
     void color(std::string str, int color);
 
 private:
+
+    int ConsoleWidth;
+    int ConsoleHeight;
+    int ConsoleWidthOld;
+    int ConsoleHeightOld;
 
     Point *curBlockPoints;
     Point *preBlockPoints;
