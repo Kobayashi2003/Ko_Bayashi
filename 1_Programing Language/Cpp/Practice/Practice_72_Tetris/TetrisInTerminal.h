@@ -15,7 +15,7 @@ private:
 
     virtual void updateWindowFunc();
 
-    void getConsoleSize();
+    void getConsoleSize(); // TODO
 
     bool haveCurBlock(int row, int col);
     bool havePreBlock(int row, int col);

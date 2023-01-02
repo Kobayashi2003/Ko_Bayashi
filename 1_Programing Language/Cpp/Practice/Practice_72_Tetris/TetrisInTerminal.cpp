@@ -279,9 +279,6 @@ void TiT::updateWindowFunc() {
 }
 
 void TiT::getConsoleSize() {
-    // the size of the console is save in the file "ConsoleSize"
-    // the first line is the console width, the second line is the console height
-    std::ifstream fin("ConsoleSize");
     // TODO
 }
 
