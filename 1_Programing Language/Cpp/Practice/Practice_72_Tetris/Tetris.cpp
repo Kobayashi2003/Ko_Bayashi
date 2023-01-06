@@ -432,6 +432,7 @@ void Tetris::updateTop10ScoresFile() { // done
             // put the score in this position
             top10Scores.insert(top10Scores.begin() + i, score);
             top10Scores.pop_back();
+            break;
         }
     }
     // update the top 10 scores file

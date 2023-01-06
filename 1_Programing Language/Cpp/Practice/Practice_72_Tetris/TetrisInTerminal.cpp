@@ -247,19 +247,19 @@ void TiT::updateWindowFunc() {
         }
 
         // show the score, level, time, speed
-        else if (showScore && row == 7) {
+        if (showScore && row == 7) {
             std::cout << "\t\tScore: " << score;
         }
-        else if (showLevel && row == 8) {
+        if (showLevel && row == 8) {
             std::cout << "\t\tLevel: " << curLevel;
         }
-        else if (showTime && row == 9) {
+        if (showTime && row == 9) {
             std::cout << "\t\tTime: " << gameTime;  
         }
-        else if (showSpeed && row == 10) {
+        if (showSpeed && row == 10) {
             std::cout << "\t\tSpeed: " << speed;
         }
-        else if (showLines && row == 11) {
+        if (showLines && row == 11) {
             std::cout << "\t\tLines: " << eliminatedLines;
         }
         std::cout << std::endl;

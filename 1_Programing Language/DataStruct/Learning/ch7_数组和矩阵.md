@@ -19,3 +19,13 @@
 - matrix
 
 **类 matrix**
+
+
+## 特殊矩阵
+
+- 方阵 square matrix
+  - 对角矩阵 diagonal
+  - 三对角矩阵 tridiagonal
+  - 下三角矩阵 lower triangular
+  - 上三角矩阵 upper triangular
+  - 对称矩阵 symmetric
