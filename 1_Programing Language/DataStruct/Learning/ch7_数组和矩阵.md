@@ -29,3 +29,9 @@
   - 下三角矩阵 lower triangular
   - 上三角矩阵 upper triangular
   - 对称矩阵 symmetric
+
+
+## 稀疏矩阵
+
+- sparse matrix（稀疏矩阵） dense matrix（稠密矩阵）
+

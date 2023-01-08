@@ -4,6 +4,8 @@
 #include <iostream>
 #include <sstream>
 
+using namespace std;
+
 template <typename T>
 class chain : public linearList<T> {
 public:
