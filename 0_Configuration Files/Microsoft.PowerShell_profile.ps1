@@ -155,9 +155,29 @@ function _Go_HooK {
     $global:hook = $tmp
 }
 
+# Git
+function _Git {
+    git add .
+    # get current date
+    $date = Get-Date -Format "yyMMdd"
+    git commit -m $date
+    git push origin master
+}
+
+
 ## Function End
 
-
+## Atlas200Dk Function Start
+function _Connect_Atlas200Dk {
+    $ips = arp -a -N 192.168.137.1 | Select-String -Pattern "192.168.137.[0-9]+" | Select-Object -Skip 1 | ForEach-Object { $_.ToString().Trim().Split(" ")[0] }
+    $ip = $ips[0]
+    if ($null -eq $ip) {
+        Write-Output "Atlas200Dk is not connected"
+        return
+    }
+    ssh HwHiAiUser@$ip
+}
+## Atlas200Dk Function End
 
 ## Alias Start
 
@@ -262,7 +282,9 @@ Set-PSReadLineKeyHandler -Key DownArrow -Function HistorySearchForward
 
 #region conda initialize
 # !! Contents within this block are managed by 'conda init' !!
-(& "D:\Program\Anaconda\Scripts\conda.exe" "shell.powershell" "hook") | Out-String | Invoke-Expression
+function _Conda {
+    (& "D:\Program\Anaconda\Scripts\conda.exe" "shell.powershell" "hook") | Out-String | Invoke-Expression
+}
 #endregion
 
 ### Module Anaconda End ###
